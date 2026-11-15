@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#121714"><meta name="apple-mobile-web-app-capable" content="yes"><title>Film Dial · Apple Camera</title>
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="Film Dial">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<style>
+:root{color-scheme:dark;--bg:#111714;--card:#1d2620;--border:#344239;--text:#f6f5ea;--muted:#a2afa2;--gold:#dbbf90;--warn:#f4b499;--good:#b8d8b4}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;-webkit-font-smoothing:antialiased}button,input,select{font:inherit;color:inherit}button{cursor:pointer;border:1px solid #445248;background:#263329;border-radius:8px;-webkit-tap-highlight-color:transparent}button:active{background:#455845}input,select{height:40px;background:#111a14;border:1px solid #344138;border-radius:9px;padding:0 10px;min-width:0}input{font-size:19px;font-variant-numeric:tabular-nums;max-width:100%;outline:none}input:focus,select:focus,button:focus-visible{border-color:var(--gold);outline:none}select{font-size:14px}label{min-width:0}
+#app{width:100%;max-width:440px;margin:auto;padding:calc(env(safe-area-inset-top,0px) + 9px) 11px calc(env(safe-area-inset-bottom,0px) + 8px);display:flex;flex-direction:column;gap:9px}header{height:34px;display:flex;justify-content:space-between;align-items:center}header h1{font-size:21px;letter-spacing:-.8px;margin:0;line-height:1}header h1 b{color:var(--gold)}.actions{display:flex;align-items:center;gap:8px}.sub{font-size:11px;color:var(--muted)}.phonebadge{background:transparent;border:0;padding:5px 2px;font-size:11px;max-width:165px;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;color:var(--muted);font-weight:650}.phonebadge:active{color:var(--gold);background:transparent}.iconbutton{width:31px;height:31px;display:grid;place-items:center;font-size:19px;padding:0;border-radius:50%}
+.card{background:var(--card);border:1px solid var(--border);border-radius:13px}.lightroom{padding:9px 11px 10px}.section-title{font-size:10px;font-weight:750;letter-spacing:1.3px;color:var(--muted);margin:0 0 7px}.sourcerow{display:grid;grid-template-columns:1fr 1fr;gap:8px}.field{border:1px solid var(--border);border-radius:9px;background:#141c17;height:45px;display:flex;align-items:center;padding:0 9px;gap:8px}.field span{font-size:11px;color:var(--muted);flex:0 0 auto}.field input{border:0;background:transparent;height:41px;width:100%;padding:0;text-align:right;font-weight:700;font-size:21px}.filmrow{display:grid;grid-template-columns:minmax(0,1fr) 130px;gap:8px}.filmrow select{width:100%;height:40px}.filmrow .field{height:40px}.filmrow .field input{font-size:20px;height:37px}
+.wheels{display:grid;grid-template-columns:1fr 1fr;gap:9px}.wheel{background:linear-gradient(130deg,#242f26,#1a261e 65%,#2a3529);border:1px solid #425346;border-radius:15px;padding:8px 6px 8px;min-width:0}.wheel.current{border-color:#ac9b76}.wheel-top{display:flex;justify-content:space-between;align-items:center;gap:4px;padding:0 2px 4px}.wheel-top span{font-size:10px;font-weight:750;letter-spacing:.8px;color:var(--muted)}.wheel-top .controls{display:flex;gap:4px}.wheel-top button{width:27px;height:25px;border-radius:6px;font-size:17px;padding:0;line-height:1}.drum{height:154px;position:relative;overflow:hidden;border-radius:8px;touch-action:none;user-select:none;-webkit-user-select:none;cursor:ns-resize}.drum:before,.drum:after{content:"";position:absolute;left:0;right:0;height:49px;z-index:2;pointer-events:none}.drum:before{top:0;background:linear-gradient(#243027,transparent)}.drum:after{bottom:0;background:linear-gradient(transparent,#253027)}.drum .focusline{height:44px;position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);border-top:1px solid #a08e68;border-bottom:1px solid #a08e68;background:rgba(220,192,135,.07);pointer-events:none;z-index:1}.drumitem{position:absolute;left:0;width:100%;height:44px;display:flex;justify-content:center;align-items:center;background:transparent;border:0;color:#a9b8a8;white-space:nowrap;font-size:17px;font-variant-numeric:tabular-nums;letter-spacing:-.45px;transform:translateY(-50%);padding:0;touch-action:none}.drumitem[aria-selected=true]{font-size:30px;font-weight:780;letter-spacing:-1px;color:#fff7e8}.drumitem:focus{outline:none}
+.nd{height:53px;display:flex;align-items:center;gap:6px;padding:6px 8px}.nd select{flex:0 0 130px;width:130px;font-size:13px;height:38px;padding:0 5px}.nd button{height:36px;width:37px;font-size:20px;flex:0 0 37px}.ndinfo{flex:1;text-align:center;min-width:0}.ndinfo strong{display:block;font-weight:740;font-size:17px;line-height:1.2}.ndinfo small{font-size:10px;color:var(--gold)}
+.result{min-height:69px;display:flex;gap:6px;padding:9px 11px;align-items:center;justify-content:space-between}.result .muted{font-size:10px;letter-spacing:.7px;color:var(--muted);text-transform:uppercase}.result .value{font-size:24px;font-weight:760;font-variant-numeric:tabular-nums;letter-spacing:-.8px;line-height:1.25}.result .right{text-align:right}.result .right .value{font-size:18px;color:var(--good)}.result .right .value.warn{color:var(--gold)}.result .right .value.bad{color:var(--warn)}.result .minor{font-size:10px;color:var(--muted);margin-top:2px;max-width:180px}
+.flash{padding:9px 10px 10px}.flashhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}.flashhead strong{font-size:11px;letter-spacing:.85px;font-weight:800}.flashhead>span{color:var(--muted);font-size:10px;text-align:right;max-width:190px;line-height:1.2}.flashpick{display:flex;align-items:center;gap:5px;flex:1;min-width:0}.flashpick span{font-size:15px}.flashpick select{height:28px;min-width:0;max-width:163px;border:none;background:transparent;font-size:12px;font-weight:800;letter-spacing:.1px;padding:0 16px 0 0;cursor:pointer}.flashrow{display:grid;grid-template-columns:88px 96px minmax(0,1fr);gap:7px;align-items:center}.distance{height:42px;display:flex;align-items:center;gap:3px;padding:0 6px;border:1px solid var(--border);border-radius:8px;background:#131b16}.distance input{width:100%;height:38px;text-align:right;border:0;padding:0;font-size:18px;background:transparent;font-weight:680}.distance span{font-size:11px;color:var(--muted)}.flashrow>select{height:42px;width:100%;padding:0 6px;font-size:13px}.flashrow>select[hidden]{display:none}.flashout{text-align:right;min-width:0}.flashout strong{font-size:23px;letter-spacing:-.7px;display:block;line-height:1.05;font-variant-numeric:tabular-nums}.flashout small{font-size:10px;color:var(--gold);display:block;margin-top:4px;line-height:1.15}.flashout .warning{color:var(--warn)}
+#settings{display:none;border:1px solid var(--border);border-radius:12px;padding:10px;gap:10px;background:#19221d}#settings.open{display:grid;grid-template-columns:1fr 1fr}#settings label{display:block;color:var(--muted);font-size:11px}#settings select,#settings input{display:block;margin-top:5px;width:100%}#settings .smallprint{grid-column:1/-1;color:var(--muted);font-size:11px;line-height:1.4}.note{font-size:10px;color:#7c8e7f;text-align:center;line-height:1.3}
+@media(max-height:700px){#app{gap:6px;padding-top:calc(env(safe-area-inset-top,0px) + 4px)}header{height:30px}.lightroom{padding:7px 9px}.field{height:40px}.field input{height:37px}.drum{height:126px}.wheel{padding-top:6px;padding-bottom:6px}.result{min-height:60px;padding:7px 9px}.flash{padding:7px 9px}.nd{height:47px}.note{display:none}}
+@media(max-width:360px){#app{padding-left:7px;padding-right:7px}.flashrow{grid-template-columns:79px 82px minmax(0,1fr);gap:4px}.nd select{flex-basis:112px;width:112px}.nd button{flex-basis:33px;width:33px}.wheel-top span{letter-spacing:.2px}.drumitem[aria-selected=true]{font-size:27px}}
+.lightroom-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px;gap:8px}.lightroom-head .section-title{margin:0;min-width:0;letter-spacing:.9px}.exif-btn{flex-shrink:0;min-width:120px;padding:0 8px;height:27px;line-height:1;border:1px solid #60765f;color:var(--gold);background:#23342a;border-radius:7px;font-size:12px;font-weight:750}.exif-btn:active{background:#35483b}.exif-btn.error{color:var(--warn);border-color:#7a4b3e}.exif-btn.success{color:var(--good);border-color:#587c59}
+.exif-toast{position:fixed;z-index:100;bottom:calc(env(safe-area-inset-bottom,0px) + 24px);left:50%;transform:translateX(-50%);width:min(92vw,400px);background:#24362a;border:1px solid #688362;color:#f7f6ee;border-radius:11px;padding:11px 14px;text-align:center;box-shadow:0 8px 35px #0009;font-size:13px;font-weight:620;line-height:1.4}.exif-toast[hidden]{display:none}.exif-toast.error{background:#463029;border-color:#ad6a55}.cal-test{grid-column:1/-1;border:1px solid var(--border);border-radius:10px;padding:9px;background:#111914}.cal-test-grid{display:grid;grid-template-columns:1fr 1fr 1.3fr;gap:7px}.cal-test-grid input{height:36px;font-size:16px}.cal-test-actions{display:flex;justify-content:space-between;align-items:center;gap:5px;margin-top:8px;font-size:11px;color:var(--muted)}.cal-test-actions button{padding:7px 10px;color:var(--gold)}
+</style></head><body><div id="exifToast" class="exif-toast" role="status" aria-live="polite" hidden></div><main id="app">
+<header><h1>FILM <b>DIAL</b></h1><div class="actions"><button type="button" class="sub phonebadge" id="lensLabel" aria-label="Выбрать iPhone и объектив" title="Выбрать iPhone и объектив">13 Pro · 1× · f/1.5</button><button type="button" id="settingsToggle" class="iconbutton" aria-label="Настройки" aria-expanded="false">⚙</button></div></header>
+<section class="lightroom card"><div class="lightroom-head"><div class="section-title">ПРОБНЫЙ КАДР</div><button type="button" class="exif-btn" id="exifBtn" aria-label="Выбрать последний снимок из приложения Фото" title="Выбрать последнюю фотографию из медиатеки Apple">▣ Последний кадр</button><input id="exifFile" type="file" accept="image/*,.heic,.heif,.dng,.tif,.tiff" hidden></div><div class="sourcerow"><label class="field"><span>ISO</span><input id="srcISO" type="number" min="1" step="1" inputmode="numeric" value="100" aria-label="ISO пробного снимка"></label><label class="field"><span>1/с</span><input id="srcTime" type="text" inputmode="text" value="1/500" aria-label="Выдержка пробного снимка"></label></div></section>
+<div class="filmrow"><select id="stock" aria-label="Плёнка"><option value="any">Любая плёнка</option><option value="instax">Instax Square</option><option value="hp5">Ilford HP5+</option><option value="fp4">Ilford FP4+</option><option value="d100">Delta 100</option><option value="d400">Delta 400</option><option value="k100">Kentmere 100</option><option value="k400">Kentmere 400</option></select><label class="field"><span>ISO</span><input id="filmISO" type="number" min="1" value="400" inputmode="numeric" aria-label="ISO плёнки"></label></div>
+<section class="wheels" aria-label="Колёса экспозиции">
+<div class="wheel current" id="fWheel"><div class="wheel-top"><span>ДИАФРАГМА</span><div class="controls"><button type="button" id="fminus" aria-label="Диафрагма меньше">−</button><button type="button" id="fplus" aria-label="Диафрагма больше">+</button></div></div><div class="drum" id="fDrum" tabindex="0" role="listbox" aria-label="Колесо диафрагмы"><div class="focusline"></div></div></div>
+<div class="wheel" id="tWheel"><div class="wheel-top"><span>ВЫДЕРЖКА</span><div class="controls"><button type="button" id="tminus" aria-label="Выдержка короче">−</button><button type="button" id="tplus" aria-label="Выдержка длиннее">+</button></div></div><div class="drum" id="tDrum" tabindex="0" role="listbox" aria-label="Колесо выдержки"><div class="focusline"></div></div></div>
+</section>
+<section class="nd card"><select id="ndMode" aria-label="ND-фильтр"><option value="fixed">ND · обычный</option><option value="kf">ND · K&F</option><option value="manual">ND · EV вручную</option></select><button type="button" id="ndMinus" aria-label="ND меньше">−</button><div class="ndinfo"><strong id="ndLabel">Без ND</strong><small id="ndEv">0 EV</small></div><button type="button" id="ndPlus" aria-label="ND больше">+</button></section>
+<section class="result card" aria-live="polite"><div><span class="muted" id="exactLabel">Точная выдержка</span><div class="value" id="exact">—</div><div class="minor" id="detail">—</div></div><div class="right"><span class="muted">Выбранная пара</span><div class="value" id="delta">—</div><div class="minor" id="pair">—</div></div></section>
+<section class="flash card"><div class="flashhead"><label class="flashpick"><span aria-hidden="true">⚡</span><select id="flashModel" aria-label="Выбор вспышки"><option value="sb600">Nikon SB-600</option><option value="ad360">Godox AD360</option></select></label><span id="flashMeta">прямой свет · M</span></div><div class="flashrow"><label class="distance"><input id="dist" type="number" value="2" min="0.2" step="0.1" inputmode="decimal" aria-label="Расстояние вспышка–объект"><span>м</span></label><select id="zoom" aria-label="Зум головки вспышки"><option value="14">14 мм*</option><option value="24">24 мм</option><option value="28">28 мм</option><option value="35" selected>35 мм</option><option value="50">50 мм</option><option value="70">70 мм</option><option value="85">85 мм</option></select><select id="modifier" aria-label="Насадка Godox AD360" hidden><option value="ads7">AD-S7</option><option value="ads2">AD-S2</option></select><div class="flashout"><strong id="power">—</strong><small id="powerDetail">мощность</small></div></div></section>
+<section id="settings" aria-label="Настройки"><label>Модель iPhone<select id="phoneModel" aria-label="Модель iPhone"></select></label><label>Камера iPhone<select id="phoneLens" aria-label="Объектив iPhone"></select></label><label id="customFWrap" style="display:none">Диафрагма вручную<input id="customF" type="number" step="0.01" min="0.7" value="1.5"></label><label>Шаг колёс<select id="steps"><option value="full">1 стоп</option><option value="third">1/3 стопа</option></select></label><label>Поправка плёнки, EV<input id="bias" type="number" step="0.1" value="0"></label><label>Калибровка iPhone, EV<input id="meterBias" type="number" step="0.1" value="0"></label><label>AD-S7: потери света (оценка)<select id="ad7Loss"><option value="0">0 EV</option><option value="0.5">0,5 EV</option><option value="1">1 EV</option><option value="1.5">1,5 EV</option><option value="2" selected>2 EV · ориентир</option><option value="2.5">2,5 EV</option><option value="3">3 EV</option><option value="3.5">3,5 EV</option><option value="4">4 EV</option></select></label><label>Дополнительные потери света<select id="flashLoss"><option value="0">Нет</option><option value="1">1 EV</option><option value="2">2 EV</option><option value="3">3 EV</option><option value="4">4 EV</option></select></label><label>Назначение вспышки<select id="flashFill"><option value="0">Основной свет</option><option value="-1">Заполнение −1 EV</option><option value="-2">Заполнение −2 EV</option></select></label><label>Максимальная X-синхронизация<select id="sync"><option value="0">Не задана</option><option value="0.0166666667">1/60</option><option value="0.008">1/125</option><option value="0.004">1/250</option><option value="0.002">1/500</option></select></label><div class="cal-test"><div class="section-title" style="margin:0 0 6px">СВЕРКА С ЦИФРОВОЙ КАМЕРОЙ</div><div class="cal-test-grid"><label>ISO<input id="refISO" type="number" min="1" step="1" inputmode="numeric" value="100"></label><label>f/<input id="refF" type="number" min="0.5" step="0.1" inputmode="decimal" value="5.6"></label><label>Выдержка<input id="refT" type="text" inputmode="text" value="1/125"></label></div><div class="cal-test-actions"><span id="calResult">Снимите одну сцену на обе камеры</span><button id="calApply" type="button">Сравнить</button></div></div><div class="smallprint">Берите ISO/f/выдержку с цифровой камеры, снятой при похожем освещении и тем же экспозамерным приоритетом. Поправка iPhone применяется только к постоянному свету (вспышку не меняет). Диафрагма при импорте берётся из EXIF, а не из кнопки 3×. В стандартной камере iPhone телефото может заменяться кропом основной камеры. Диафрагма задаётся моделью и объективом. В Lightroom проверь EXIF, особенно если камера автоматически переключилась в макро/телефото-режиме. Обычный 2× кроп сохраняет физическую диафрагму основной камеры. SB-600: ведущие числа Nikon по зуму, ISO 100; 14 мм — со встроенным рассеивателем. AD360: GN 80, ISO 100 только со стандартным рефлектором AD-S2. Малый зонт AD-S7 (48 см, отражающая тарелочка + передний диффузор): измерений GN от Godox нет. −2 EV — предварительная гипотеза для калибровки, не спецификация. Для отражённого света добавляй потери. Расстояние — от вспышки до объекта. HSS не учитывается. Reciprocity — только для постоянного света.</div></section>
+
+</main>
+<script>
+(function(){'use strict';
+const $=id=>document.getElementById(id), clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+const F1=[0.7,1,1.4,2,2.8,4,5.6,8,11,16,22,32,45,64];
+const F3=[0.7,0.8,0.9,1,1.1,1.2,1.4,1.6,1.8,2,2.2,2.5,2.8,3.2,3.5,4,4.5,5,5.6,6.3,7.1,8,9,10,11,13,14,16,18,20,22,25,29,32,36,40,45,51,57,64];
+const T1=[1/8000,1/4000,1/2000,1/1000,1/500,1/250,1/125,1/60,1/30,1/15,1/8,1/4,1/2,1,2,4,8,15,30,60,120,240,480,960,1800];
+const T3=[1/8000,1/6400,1/5000,1/4000,1/3200,1/2500,1/2000,1/1600,1/1250,1/1000,1/800,1/640,1/500,1/400,1/320,1/250,1/200,1/160,1/125,1/100,1/80,1/60,1/50,1/40,1/30,1/25,1/20,1/15,1/13,1/10,1/8,1/6,1/5,1/4,1/3,1/2.5,1/2,1/1.6,1/1.3,1,1.3,1.6,2,2.5,3.2,4,5,6,8,10,13,15,20,25,30,40,50,60,80,100,120,160,200,240,320,400,480,640,800,960,1200,1500,1800];
+const FILMS={any:[null,1],instax:[800,1],hp5:[400,1.31],fp4:[125,1.26],d100:[100,1.26],d400:[400,1.41],k100:[100,1.26],k400:[400,1.30]};
+const KF=[['MIN',1],['1',1.1],['2',1.2],['3',1.5],['4',1.9],['5',2.4],['6',3.1],['7',4.2],['8',6.3]];
+// Lens aperture for rear cameras, verified against Apple specifications. Cropped 2× modes use the main camera's physical f-number.
+const PHONES={
+ '11pro':{name:'11 Pro / Pro Max',lenses:[['0.5×',2.4],['1×',1.8],['2×',2.0]]},
+ '12':{name:'12 / 12 mini',lenses:[['0.5×',2.4],['1×',1.6]]},
+ '12pro':{name:'12 Pro',lenses:[['0.5×',2.4],['1×',1.6],['2×',2.0]]},
+ '12promax':{name:'12 Pro Max',lenses:[['0.5×',2.4],['1×',1.6],['2.5×',2.2]]},
+ '13':{name:'13 / 13 mini',lenses:[['0.5×',2.4],['1×',1.6]]},
+ '13pro':{name:'13 Pro / Pro Max',lenses:[['0.5×',1.8],['1×',1.5],['3×',2.8]]},
+ '14':{name:'14 / 14 Plus',lenses:[['0.5×',2.4],['1×',1.5]]},
+ '14pro':{name:'14 Pro / Pro Max',lenses:[['0.5×',2.2],['1×',1.78],['2× (кроп)',1.78],['3×',2.8]]},
+ '15':{name:'15 / 15 Plus',lenses:[['0.5×',2.4],['1×',1.6],['2× (кроп)',1.6]]},
+ '15pro':{name:'15 Pro',lenses:[['0.5×',2.2],['1×',1.78],['2× (кроп)',1.78],['3×',2.8]]},
+ '15promax':{name:'15 Pro Max',lenses:[['0.5×',2.2],['1×',1.78],['2× (кроп)',1.78],['5×',2.8]]},
+ '16':{name:'16 / 16 Plus',lenses:[['0.5×',2.2],['1×',1.6],['2× (кроп)',1.6]]},
+ '16pro':{name:'16 Pro / Pro Max',lenses:[['0.5×',2.2],['1×',1.78],['2× (кроп)',1.78],['5×',2.8]]},
+ '17':{name:'17',lenses:[['0.5×',2.2],['1×',1.6],['2× (кроп)',1.6]]},
+ '17pro':{name:'17 Pro / Pro Max',lenses:[['0.5×',2.2],['1×',1.78],['2× (кроп)',1.78],['4×',2.8],['8× (кроп)',2.8]]},
+ 'other':{name:'Другой / вручную',lenses:[['Вручную',null]]}
+};
+const GN={'14':14,'24':26,'28':28,'35':30,'50':36,'70':38,'85':40};
+const st={srcExifF:null,calibrations:{},fi:2.8,t:1/500,active:'f',ndMode:'fixed',ndIndex:0,ndCustom:0};
+const fList=()=> $('steps').value==='third'?F3:F1,tList=()=> $('steps').value==='third'?T3:T1;
+const round=(n,places=1)=>Number(n.toFixed(places)).toLocaleString('ru-RU',{maximumFractionDigits:places});
+const fLabel=n=>'f/'+round(n,Number.isInteger(n)?0:1);
+function tLabel(t){if(t<1){let inv=1/t;return '1/'+round(inv,inv<8?1:0)}if(t<60)return round(t,t%1?1:0)+' с';if(t<3600)return round(t/60,1)+' мин';return round(t/3600,1)+' ч'}
+function parseT(s){s=String(s).trim().replace(',','.').replace(/\s*(с|сек|s|sec)$/i,'');const m=s.match(/^(\d+(?:\.\d+)?)\s*\/\s*(\d+(?:\.\d+)?)$/);const n=m?(+m[1])/(+m[2]):Number(s);return Number.isFinite(n)&&n>0?n:NaN}
+function nearest(a,n){let best=0,e=Infinity;for(let i=0;i<a.length;i++){let d=Math.abs(Math.log2(a[i]/n));if(d<e){best=i;e=d}}return best}
+function ndStops(){return st.ndMode==='kf'?KF[st.ndIndex][1]:st.ndMode==='manual'?st.ndCustom:st.ndIndex}
+function state(){let iso=+$('srcISO').value,t=parseT($('srcTime').value),film=+$('filmISO').value,f=(Number(st.srcExifF)>0?Number(st.srcExifF):phoneAperture()),filmBias=+$('bias').value,meterBias=+$('meterBias').value;return {iso,t,film,f,filmBias,meterBias,bias:filmBias+meterBias,p:FILMS[$('stock').value][1]}}
+function valid(x){return x.iso>0&&Number.isFinite(x.t)&&x.film>0&&x.f>0&&Number.isFinite(x.bias)&&Number.isFinite(x.filmBias)&&Number.isFinite(x.meterBias)}
+function rec(t,p){return p>1&&t>1?Math.pow(t,p):t}
+function unrec(t,p){return p>1&&t>1?Math.pow(t,1/p):t}
+function timeIdeal(f,x){return rec(x.t*Math.pow(f/x.f,2)*(x.iso/x.film)*Math.pow(2,ndStops()+x.bias),x.p)}
+function fIdeal(t,x){return x.f*Math.sqrt(unrec(t,x.p)/x.t*x.film/x.iso/Math.pow(2,ndStops()+x.bias))}
+function items(k){return k==='f'?fList():tList()}
+function value(k){return k==='f'?st.fi:st.t}
+function format(k,v){return k==='f'?fLabel(v):tLabel(v)}
+function paintWheel(k){let dom=$(k+'Drum'),a=items(k),idx=nearest(a,value(k));dom.querySelectorAll('.drumitem').forEach(n=>n.remove());for(let offset=-2;offset<=2;offset++){let i=idx+offset;if(i<0||i>=a.length)continue;let el=document.createElement('button');el.type='button';el.className='drumitem';el.textContent=format(k,a[i]);el.style.top='calc(50% + '+(offset*43)+'px)';el.setAttribute('aria-selected',offset===0?'true':'false');el.setAttribute('aria-label',format(k,a[i]));el.dataset.index=String(i);dom.appendChild(el)}}
+function drawND(){let v=ndStops();if(st.ndMode==='fixed')$('ndLabel').textContent=v===0?'Без ND':'ND'+round(Math.pow(2,v),0);else if(st.ndMode==='kf')$('ndLabel').textContent='K&F · '+KF[st.ndIndex][0];else $('ndLabel').textContent=round(v,1)+' EV';$('ndEv').textContent=round(v,1)+' стоп.'}
+function flashCalc(x){
+ const d=Number($('dist').value),z=$('zoom').value,extraLoss=Number($('flashLoss').value),fill=Number($('flashFill').value),flash=$('flashModel').value;
+ const godox=flash==='ad360';
+ const umbrella=godox&&$('modifier').value==='ads7';
+ const estimatedLoss=umbrella?Number($('ad7Loss').value):0;
+ const effectiveGN=godox?80:GN[z];
+ const meta=umbrella?'зонт AD-S7 · ≈−'+round(estimatedLoss,1)+' EV':godox?'AD-S2 · GN 80':'прямой свет · M';
+ const sync=Number($('sync').value);
+ $('flashMeta').textContent=sync>0&&st.t<sync-1e-9?'⚠ быстрее X-sync':meta;
+ $('flashMeta').style.color=sync>0&&st.t<sync-1e-9?'var(--warn)':'var(--muted)';
+ if(!Number.isFinite(d)||d<=0||!valid(x)){
+  $('power').textContent='—';$('powerDetail').textContent='Проверь расстояние';$('powerDetail').className='warning';return;
+ }
+ // Published GN applies to ISO 100 at 1/1 and with a designated reflector.
+ // Modifier losses reduce exposure in stops. No reciprocity correction for flash pulse.
+ const power=Math.pow(st.fi*d/(effectiveGN*Math.sqrt(x.film/100)),2)*Math.pow(2,ndStops()+x.filmBias+extraLoss+estimatedLoss+fill);
+ if(!Number.isFinite(power)||power<=0){$('power').textContent='—';$('powerDetail').textContent='Проверь параметры';return}
+ const needed=-Math.log2(power),maxSteps=godox?7:6,limit=Math.round(maxSteps*3);
+ let nearestStep=clamp(Math.round(needed*3),0,limit)/3;
+ let actual=Math.pow(2,-nearestStep),delta=Math.log2(actual/power);
+ let whole=Math.floor(nearestStep+1e-8),fraction=nearestStep-whole;
+ let output='M 1/'+(2**whole);
+ if(fraction>0.1)output+=' −'+(fraction<0.5?'0.3':'0.7');
+ $('power').textContent=(umbrella?'≈ ':'')+output;
+ const detail=$('powerDetail');detail.className='';
+ if(needed>maxSteps+1e-6){detail.textContent='1/'+(2**maxSteps)+' слишком ярко · '+round(needed-maxSteps,1)+' EV';detail.className='warning';}
+ else if(needed<-1e-6){detail.textContent='1/1 недостаточно · '+round(-needed,1)+' EV';detail.className='warning';}
+ else{detail.textContent=(umbrella?'оценка · ':'')+(delta>=0?'+':'')+round(delta,1)+' EV';}
+}
+function updateFlash(){
+ const godox=$('flashModel').value==='ad360';
+ $('zoom').hidden=godox;$('modifier').hidden=!godox;
+ render();
+}
+function render(){const x=state();drawND();if(!valid(x)){$('exact').textContent='—';$('detail').textContent='Проверь ISO/выдержку';$('delta').textContent='—';$('pair').textContent='—';$('power').textContent='—';return}
+ let exact;if(st.active==='f'){exact=timeIdeal(st.fi,x);st.t=tList()[nearest(tList(),exact)];$('exactLabel').textContent='Точная выдержка';$('exact').textContent=tLabel(exact)}else{exact=fIdeal(st.t,x);st.fi=fList()[nearest(fList(),exact)];$('exactLabel').textContent='Точная диафрагма';$('exact').textContent=fLabel(exact)}
+ let base=x.t*Math.pow(st.fi/x.f,2)*x.iso/x.film*Math.pow(2,ndStops()+x.bias),diff=Math.log2(unrec(st.t,x.p)/base);
+ $('delta').textContent=(diff>0?'+':'')+round(diff,2)+' EV';$('delta').className='value'+(Math.abs(diff)>.45?' bad':Math.abs(diff)>.2?' warn':'');$('pair').textContent=fLabel(st.fi)+' · '+tLabel(st.t);
+ $('detail').textContent=x.p>1&&timeIdeal(st.fi,x)>1?'с поправкой reciprocity':'округли до ближайшей отметки';
+ ['f','t'].forEach(k=>{paintWheel(k);$(k+'Wheel').classList.toggle('current',st.active===k)});flashCalc(x);save();}
+function select(k,newIndex){let a=items(k),i=clamp(newIndex,0,a.length-1);if(k==='f')st.fi=a[i];else st.t=a[i];st.active=k;render()}
+function increment(k,step){let a=items(k);select(k,nearest(a,value(k))+step)}
+function bind(k){let e=$(k+'Drum');e.addEventListener('click',ev=>{let el=ev.target.closest('.drumitem');if(el && !e.dataset.dragged)select(k,+el.dataset.index);delete e.dataset.dragged});let gesture=null;e.addEventListener('pointerdown',ev=>{if(ev.pointerType==='mouse'&&ev.button!==0)return;gesture={y:ev.clientY,last:ev.clientY,moved:false,id:ev.pointerId};});e.addEventListener('pointermove',ev=>{if(!gesture)return;let d=ev.clientY-gesture.last;if(Math.abs(ev.clientY-gesture.y)>7&&!gesture.moved){gesture.moved=true;e.dataset.dragged='1';try{e.setPointerCapture(gesture.id)}catch(ex){}}const stepSize=29;if(Math.abs(d)>=stepSize){let delta=Math.trunc(d/stepSize);increment(k,-delta);gesture.last+=delta*stepSize}});e.addEventListener('pointerup',ev=>{if(gesture&&gesture.moved){let d=ev.clientY-gesture.last;if(Math.abs(d)>12)increment(k,d<0?1:-1);e.dataset.dragged='1';setTimeout(()=>{delete e.dataset.dragged},0)}gesture=null});e.addEventListener('pointercancel',()=>{gesture=null;delete e.dataset.dragged});e.addEventListener('wheel',ev=>{ev.preventDefault();increment(k,ev.deltaY>0?1:-1)},{passive:false});e.addEventListener('keydown',ev=>{if(ev.key==='ArrowDown'||ev.key==='ArrowUp'){ev.preventDefault();increment(k,ev.key==='ArrowDown'?1:-1)}})}
+function changeND(n){if(st.ndMode==='kf')st.ndIndex=clamp(st.ndIndex+n,0,KF.length-1);else if(st.ndMode==='fixed')st.ndIndex=clamp(st.ndIndex+n,0,12);else st.ndCustom=clamp(Math.round((st.ndCustom+n*.1)*10)/10,0,15);render()}
+function save(){try{let data={st,fields:{}};for(let k of ['srcISO','srcTime','filmISO','stock','meterBias','refISO','refF','refT','phoneModel','phoneLens','customF','steps','bias','flashLoss','flashFill','sync','dist','zoom','flashModel','modifier','ad7Loss'])data.fields[k]=$(k).value;localStorage.setItem('FilmDial_Stable_1',JSON.stringify(data))}catch(ex){}}
+let savedPhoneLens=null;function restore(){try{let data=JSON.parse(localStorage.getItem('FilmDial_Stable_1'));if(!data)return;Object.assign(st,data.st||{});if(!['f','t'].includes(st.active))st.active='f';if(!['fixed','kf','manual'].includes(st.ndMode))st.ndMode='fixed';if(data.fields)for(let [k,v]of Object.entries(data.fields)){if(k==='phoneLens'){savedPhoneLens=Number(v);continue;}if($(k))$(k).value=v;}$('ndMode').value=st.ndMode;}catch(ex){}}
+function phoneAperture(){
+ const model=PHONES[$('phoneModel').value]||PHONES['13pro'];
+ const idx=Math.max(0,Math.min(model.lenses.length-1,Number($('phoneLens').value)||0));
+ return model.lenses[idx][1]||Number($('customF').value);
+}
+function updatePhoneLens(keepIndex){
+ const model=PHONES[$('phoneModel').value]||PHONES['13pro'];
+ const sel=$('phoneLens'),old=Number(sel.value)||0;
+ sel.replaceChildren();
+ model.lenses.forEach(([name,f],i)=>{const option=document.createElement('option');option.value=String(i);option.textContent=name+(f?' · f/'+f:'');sel.appendChild(option)});
+ sel.value=String(keepIndex?Math.min(old,model.lenses.length-1):(model.lenses.findIndex(row=>row[0]==='1×')>=0?model.lenses.findIndex(row=>row[0]==='1×'):0));
+ lens();
+}
+function lens(){
+ const m=PHONES[$('phoneModel').value]||PHONES['13pro'],idx=Number($('phoneLens').value)||0,lf=m.lenses[idx]||m.lenses[0];
+ $('customFWrap').style.display=lf[1]?'none':'block';
+ const aperture=phoneAperture();
+ $('lensLabel').textContent=($('phoneModel').value==='other'?'iPhone':m.name.replace(' / Pro Max',''))+' · '+(lf[0]==='Вручную'?'f':' '+lf[0]+' · f')+'/'+(Number(st.srcExifF)>0?Number(st.srcExifF):aperture);
+}
+function toggleSettings(){let e=$('settings'),open=e.classList.toggle('open');$('settingsToggle').setAttribute('aria-expanded',String(open))}
+// Populate model options before restoring saved data.
+for(const [key,v] of Object.entries(PHONES)){const opt=document.createElement('option');opt.value=key;opt.textContent='iPhone '+v.name;$('phoneModel').appendChild(opt)}
+
+// File chooser is user-initiated: iOS never grants a PWA background photo-library access.
+// Supports TIFF-based DNG and TIFF, or JPEG APP1/Exif (no network requests).
+function readExif(buffer){
+ const data=new DataView(buffer),size=data.byteLength;
+ if(size<8)throw Error('Файл слишком короткий');
+ function parseTiff(base,max){
+  if(base+8>max)throw Error('Неполный TIFF');
+  const endian=data.getUint16(base,false),le=endian===0x4949;
+  if(!le&&endian!==0x4d4d)throw Error('Нет TIFF EXIF');
+  const u16=p=>{if(p<base||p+2>max)throw Error('EXIF за пределами файла');return data.getUint16(p,le)};
+  const u32=p=>{if(p<base||p+4>max)throw Error('EXIF за пределами файла');return data.getUint32(p,le)};
+  const s32=p=>{if(p<base||p+4>max)throw Error('EXIF за пределами файла');return data.getInt32(p,le)};
+  if(u16(base+2)!==42)throw Error('Неверный TIFF заголовок');
+  const sizes={1:1,2:1,3:2,4:4,5:8,6:1,7:1,8:2,9:4,10:8,11:4,12:8,13:4};
+  const output={};
+  function parseEntries(offset){
+   const addr=base+offset;
+   if(addr+2>max)return [];
+   const n=u16(addr);if(n>10000||addr+2+n*12>max)return [];
+   let entries=[];
+   for(let i=0;i<n;i++){
+    const pos=addr+2+i*12;
+    const tag=u16(pos),type=u16(pos+2),count=u32(pos+4),len=(sizes[type]||0)*count;
+    if(!len||len>1000000)continue;
+    const valPos=len<=4?pos+8:base+u32(pos+8);
+    if(valPos<base||valPos+len>max)continue;
+    let number;
+    if(type===5||type===10){const a=type===10?s32(valPos):u32(valPos),b=type===10?s32(valPos+4):u32(valPos+4);number=b?a/b:NaN}
+    else if(type===3&&count===2&&(tag===0x829a||tag===0x829d)){const den=u16(valPos+2);number=den?u16(valPos)/den:NaN;}
+    else if(type===3)number=u16(valPos);
+    else if(type===4)number=u32(valPos);
+    else if(type===9)number=s32(valPos);
+    else if(type===1||type===6||type===7)number=data.getUint8(valPos);
+    else if(type===2)number=NaN;
+    else continue;
+    if(tag===0x0110&&type===2){
+     // Camera model ASCII string (useful when iPhone has several physical lenses).
+     const bytes=new Uint8Array(buffer,valPos,Math.min(len,100));
+     output.model=new TextDecoder('ascii').decode(bytes).split('\0')[0].trim();
+    }
+    if(Number.isFinite(number))entries.push([tag,number]);
+   }
+   return entries;
+  }
+  const entries=parseEntries(u32(base+4)),exifIFD=entries.find(item=>item[0]===0x8769);
+  const exif=exifIFD?parseEntries(exifIFD[1]):[];
+  for(const [tag,v]of [...entries,...exif]){
+   if(tag===0x8827||tag===0x8833)output.iso=v;
+   if(tag===0x829a)output.exposure=v;
+   if(tag===0x829d)output.aperture=v;
+   if(tag===0x9201&&!(output.exposure>0))output.exposure=Math.pow(2,-v);
+   if(tag===0x9202&&!(output.aperture>0))output.aperture=Math.pow(2,v/2);
+  }
+  return output;
+ }
+ const ii=data.getUint16(0,false);
+ if(ii===0x4949||ii===0x4d4d)return parseTiff(0,size);
+ // ISO-BMFF / HEIC: locate the Exif item via iinf+iloc; then parse its TIFF payload.
+ function parseHeif(){
+  const at=p=>{if(p<0||p+4>size)throw Error('HEIC: повреждённый файл');return data.getUint32(p,false)};
+  const short=p=>{if(p<0||p+2>size)throw Error('HEIC: повреждённый файл');return data.getUint16(p,false)};
+  const four=p=>{if(p<0||p+4>size)return '';return String.fromCharCode(data.getUint8(p),data.getUint8(p+1),data.getUint8(p+2),data.getUint8(p+3))};
+  function boxes(begin,end){const out=[];let p=begin;while(p+8<=end){let n=at(p),head=8;if(n===1){if(p+16>end)break;const big=Number(data.getBigUint64(p+8,false));if(!Number.isSafeInteger(big))break;n=big;head=16;}if(!n)n=end-p;if(n<head||p+n>end)break;out.push({type:four(p+4),start:p,body:p+head,end:p+n});p+=n;}return out;}
+  const meta=boxes(0,size).find(b=>b.type==='meta');if(!meta)throw Error('HEIC без метаданных EXIF');
+  const subs=boxes(meta.body+4,meta.end), iinf=subs.find(b=>b.type==='iinf'),iloc=subs.find(b=>b.type==='iloc'),idat=subs.find(b=>b.type==='idat');
+  if(!iinf||!iloc)throw Error('HEIC не содержит EXIF');
+  let itemId=null;
+  const infoVer=data.getUint8(iinf.body),start=iinf.body+(infoVer===0?6:8);
+  for(const entry of boxes(start,iinf.end)){
+   if(entry.type!=='infe')continue;
+   const ver=data.getUint8(entry.body);if(ver!==2&&ver!==3)continue;
+   const id=ver===2?short(entry.body+4):at(entry.body+4);
+   const tpos=entry.body+(ver===2?8:10);
+   if(four(tpos)==='Exif'){itemId=id;break;}
+  }
+  if(itemId===null)throw Error('HEIC: нет EXIF item');
+  const v=data.getUint8(iloc.body), p=iloc.body+4;
+  if(v>2)throw Error('HEIC: неизвестная версия iloc');
+  const sz=data.getUint8(p), sz2=data.getUint8(p+1);
+  const offsetSize=sz>>4,lengthSize=sz&15,baseSize=sz2>>4,indexSize=v===0?0:sz2&15;
+  function num(pos,n){if(n===0)return 0;if(pos+n>size)throw Error('HEIC: неверный iloc');let out=0;for(let j=0;j<n;j++)out=out*256+data.getUint8(pos+j);if(!Number.isSafeInteger(out))throw Error('HEIC: размер слишком большой');return out;}
+  let cur=p+2,nItems=v<2?short(cur):at(cur);cur+=v<2?2:4;
+  let chunks=null;
+  if(nItems>10000)throw Error('HEIC: некорректный iloc');
+  for(let i=0;i<nItems;i++){
+   const id=v<2?num(cur,2):num(cur,4);cur+=v<2?2:4;
+   let method=0;if(v>=1){method=num(cur,2)&15;cur+=2;}
+   const refIndex=num(cur,2);cur+=2;
+   const baseOffset=num(cur,baseSize);cur+=baseSize;
+   const count=num(cur,2);cur+=2;
+   if(count>10000)throw Error('HEIC: слишком много extents');
+   const ex=[];
+   for(let j=0;j<count;j++){
+    if(v>=1&&indexSize>0)cur+=indexSize;
+    const off=num(cur,offsetSize);cur+=offsetSize;
+    const len=num(cur,lengthSize);cur+=lengthSize;
+    if(id===itemId){
+     if(refIndex!==0)throw Error('HEIC: внешний EXIF не поддерживается');
+     const b=method===1&&idat?idat.body:0;
+     if(method!==0&&method!==1)throw Error('HEIC: неизвестный тип EXIF');
+     ex.push({from:b+baseOffset+off,len});
+    }
+   }
+   if(id===itemId){chunks=ex;break;}
+  }
+  if(!chunks?.length)throw Error('HEIC: EXIF пуст');
+  const total=chunks.reduce((acc,c)=>acc+c.len,0);
+  if(total<12||total>4000000)throw Error('HEIC: некорректный размер EXIF');
+  const chunk=new Uint8Array(total);let pos=0;
+  for(const c of chunks){if(c.from<0||c.from+c.len>size)throw Error('HEIC: EXIF выходит за пределы файла');chunk.set(new Uint8Array(buffer,c.from,c.len),pos);pos+=c.len;}
+  return readExif(chunk.buffer);
+ }
+ if(size>=12&&data.getUint32(0,false)>=8&&data.getUint32(4,false)===0x66747970)return parseHeif();
+ // HEIF Exif item starts with 4-byte big-endian offset to its TIFF header.
+ if(size>=12){
+  const start=4+data.getUint32(0,false);
+  if(start+4<=size&&(data.getUint16(start,false)===0x4949||data.getUint16(start,false)===0x4d4d))return parseTiff(start,size);
+  if(data.getUint32(0,false)===0x45786966&&data.getUint16(4,false)===0)return parseTiff(6,size);
+ }
+ // JPEG's first two bytes are FF D8. Scan metadata segments only.
+ if(data.getUint16(0,false)===0xffd8){
+  let p=2;
+  while(p+4<=size){
+   if(data.getUint8(p)!==0xff)break;
+   const marker=data.getUint8(p+1);if(marker===0xda||marker===0xd9)break;
+   if(marker===0xff){p++;continue}
+   if(marker>=0xd0&&marker<=0xd7){p+=2;continue}
+   const length=data.getUint16(p+2,false);
+   if(length<2||p+2+length>size)break;
+   if(marker===0xe1&&length>=8&&data.getUint32(p+4,false)===0x45786966&&data.getUint16(p+8,false)===0){
+    return parseTiff(p+10, p+2+length);
+   }
+   p+=2+length;
+  }
+  throw Error('В JPG нет EXIF');
+ }
+ throw Error('Нужен оригинальный HEIC, JPG или DNG');
+}
+function formatExifTime(t){
+ if(t<1){const d=1/t;return '1/'+(Math.abs(d-Math.round(d))<0.03?Math.round(d):Number(d.toPrecision(4)))}
+ return Number(t.toPrecision(5)).toString();
+}
+function noticeExif(message,type,details){
+ const button=$('exifBtn'),toast=$('exifToast');
+ button.textContent=message;button.classList.remove('error','success');
+ if(type)button.classList.add(type);
+ if(details){toast.textContent=details;toast.hidden=false;toast.className='exif-toast'+(type==='error'?' error':'');}
+ clearTimeout(noticeExif.timer);
+ noticeExif.timer=setTimeout(()=>{button.textContent='▣ Последний кадр';button.classList.remove('error','success');toast.hidden=true;},4200);
+}
+function phoneFromExif(raw){
+ const m=String(raw||'').match(/iPhone\s+(\d+)\s*(Pro Max|Pro|Plus|mini)?/i);
+ if(!m)return null;
+ const gen=m[1],kind=(m[2]||'').toLowerCase();
+ const key=gen+(kind==='pro max'&&(gen==='12'||gen==='15')?'promax':kind.startsWith('pro')?'pro':'');
+ return PHONES[key]?key:null;
+}
+async function importExif(file){
+ if(!file)return;
+ if(file.size>120*1024*1024){noticeExif('Файл большой','error','Максимальный размер — 120 МБ.');return;}
+ noticeExif('Читаю…');
+ try{
+  const meta=readExif(await file.arrayBuffer());
+  if(!(meta.iso>0)||!(meta.exposure>0)||!(meta.aperture>0))throw Error('Нет ISO, выдержки или диафрагмы. Выбери оригинальное фото с EXIF (HEIC/JPEG/DNG), не скриншот.');
+  // Apply all imported settings together only after EXIF validation.
+  $('srcISO').value=String(Math.round(meta.iso));
+  $('srcTime').value=formatExifTime(meta.exposure);
+  const model=phoneFromExif(meta.model);
+  if(model){$('phoneModel').value=model;updatePhoneLens(false);}
+  if(meta.aperture>0){
+    st.srcExifF=meta.aperture;
+    const m=PHONES[$('phoneModel').value];
+    const idx=m.lenses.findIndex(row=>row[1]&&Math.abs(row[1]-meta.aperture)<0.12);
+    if(idx>=0){$('phoneLens').value=String(idx);lens();}
+    else{
+      $('phoneModel').value='other';updatePhoneLens(false);
+      $('customF').value=String(Number(meta.aperture.toFixed(3)));lens();
+    }
+  }
+  lens();render();
+  const fs=meta.aperture>0?' · f/'+Number(meta.aperture.toFixed(2)):'';
+  noticeExif('✓ Загружено','success','Камера: ISO '+Math.round(meta.iso)+' · '+formatExifTime(meta.exposure)+' с'+fs);
+ }catch(error){
+   const message=String(error?.message||'EXIF не прочитан');
+   const guidance=/HEIC|HEIF|JPG или оригинальный DNG/.test(message)?'Попробуй оригинал HEIC, JPEG либо DNG из Фото.':message;
+   noticeExif('Нет EXIF','error',guidance);
+   console.warn('Film Dial EXIF:',error);
+ }
+}
+function calibrationKey(){
+ const f=Number(st.srcExifF)>0?Number(st.srcExifF):phoneAperture();
+ return $('phoneModel').value+'|'+f.toFixed(1);
+}
+function loadCalibration(){
+ if(!st.calibrations||typeof st.calibrations!=='object')st.calibrations={};
+ $('meterBias').value=String(st.calibrations[calibrationKey()]??0);
+}
+$('meterBias').addEventListener('input',()=>{st.calibrations[calibrationKey()]=Number($('meterBias').value)||0;render();});
+function applyCalibration(){
+ const x=state(),ri=Number($('refISO').value),rf=Number($('refF').value),rt=parseT($('refT').value),msg=$('calResult');
+ if(!valid(x)||!(ri>0)||!(rf>0)||!(rt>0)) {msg.textContent='Проверь ISO, f и выдержку';return;}
+ // Compare exposure indices at the same measured scene: t*ISO/N^2.
+ // Difference is the adjustment required to align the iPhone with the reference.
+ const phone=x.t*x.iso/(x.f*x.f),reference=rt*ri/(rf*rf);
+ const ev=Math.log2(reference/phone);
+ if(!Number.isFinite(ev)||Math.abs(ev)>15){msg.textContent='Недостоверные значения';return;}
+ $('meterBias').value=(Math.round(ev*10)/10).toFixed(1);
+ st.calibrations[calibrationKey()] = Number($('meterBias').value);
+ msg.textContent='Поправка '+(ev>=0?'+':'')+round(ev,2)+' EV · применена';
+ render();
+}
+$('calApply').addEventListener('click',applyCalibration);
+
+$('exifBtn').addEventListener('click',()=>{$('exifFile').value='';$('exifFile').click()});
+$('exifFile').addEventListener('change',event=>importExif(event.target.files&&event.target.files[0]));
+
+$('phoneModel').value='13pro';updatePhoneLens(false);
+restore();
+if(!PHONES[$('phoneModel').value])$('phoneModel').value='13pro';
+updatePhoneLens(true);
+if(Number.isInteger(savedPhoneLens)&&savedPhoneLens>=0&&savedPhoneLens<PHONES[$('phoneModel').value].lenses.length)$('phoneLens').value=String(savedPhoneLens);
+// On fresh installation, select the physical 1× main camera.
+let hasSaved=false;try{hasSaved=!!localStorage.getItem('FilmDial_Stable_1')}catch(ex){}
+if(!hasSaved)updatePhoneLens(false);
+lens();$('fplus').addEventListener('click',()=>increment('f',1));$('fminus').addEventListener('click',()=>increment('f',-1));$('tplus').addEventListener('click',()=>increment('t',1));$('tminus').addEventListener('click',()=>increment('t',-1));bind('f');bind('t');
+for(let k of ['srcISO','srcTime','filmISO','bias','dist'])$(k).addEventListener('input',render);
+for(let k of ['zoom','flashLoss','flashFill','sync','modifier','ad7Loss'])$(k).addEventListener('change',render);$('flashModel').addEventListener('change',updateFlash);
+$('stock').addEventListener('change',()=>{let newiso=FILMS[$('stock').value][0];if(newiso)$('filmISO').value=newiso;render()});
+$('ndMode').addEventListener('change',()=>{st.ndMode=$('ndMode').value;st.ndIndex=0;st.ndCustom=0;render()});$('ndPlus').addEventListener('click',()=>changeND(1));$('ndMinus').addEventListener('click',()=>changeND(-1));
+$('phoneModel').addEventListener('change',()=>{st.srcExifF=null;updatePhoneLens(false);loadCalibration();render()});$('phoneLens').addEventListener('change',()=>{st.srcExifF=null;lens();loadCalibration();render()});$('customF').addEventListener('input',()=>{st.srcExifF=null;lens();loadCalibration();render()});$('lensLabel').addEventListener('click',toggleSettings);$('steps').addEventListener('change',()=>{st.fi=fList()[nearest(fList(),st.fi)];st.t=tList()[nearest(tList(),st.t)];render()});$('settingsToggle').addEventListener('click',toggleSettings);updateFlash();
+})();
+</script><script>
+// Cache the whole app for use without cellular or Wi-Fi after the first HTTPS visit.
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('./sw.js', {scope:'./'}).catch(function (error) {
+      console.warn('Offline install unavailable:', error);
+    });
+  });
+}
+</script></body></html>
